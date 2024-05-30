@@ -1,0 +1,38 @@
+﻿@using WebApplicationIso.ViewModels;
+
+@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model CustomerViewModel
+
+<div id="maincontent">
+
+    <form asp-controller="Customer" asp-action="Add" method="post">
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label">FullName :</label>
+            <input class="form-control" asp-for="FullName" />
+            <span class="text-danger" asp-validation-for="FullName"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label form-label-inline" asp-for="Adress">Adress :</label>
+            <textarea class="form-control" id="Description" asp-for="Adress" placeholder="Tam Adres"></textarea>
+            <span class="text-danger" asp-validation-for="Adress"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label">Phone :</label>
+            <input class="form-control" asp-for="Phone" />
+            <span class="text-danger" asp-validation-for="Phone"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="TotalSalesPrice" class="form-label">TotalSalesPrice :</label>
+            <input type="number" class="form-control" asp-for="TotalSalesPrice" />
+            <span class="text-danger" asp-validation-for="TotalSalesPrice"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+

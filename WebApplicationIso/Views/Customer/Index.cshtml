@@ -1,0 +1,47 @@
+﻿@using WebApplicationIso.ViewModels
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<CustomerViewModel>
+
+<div id="maincontent">
+
+    <form asp-controller="Customer" asp-action="Add" method="get">
+        <button type="submit" class="btn btn-primary">Add Customer</button>
+    </form>
+
+    <h1>Müşteriler</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Full İsim</th>
+                <th>Adres</th>
+                <th>Telefon</th>
+                <th>TotalSalesPrice</th>
+                <th>PurchasedProducts</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.FullName</td>
+                    <td>@item.Adress</td>
+                    <td>@item.Phone</td>
+                    <td>@item.TotalSalesPrice</td>
+                    <td>Satış Yok</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+
+
+

@@ -1,0 +1,80 @@
+﻿@using WebApplicationIso.ViewModels
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model ProductViewModel
+<div id="maincontent">
+    <h1>Update Product</h1>
+
+
+    <form asp-controller="Product" asp-action="Update" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Name :</label>
+            <input class="form-control" asp-for="Name" />
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label">Price :</label>
+            <input class="form-control" asp-for="Price" />
+            <span class="text-danger" asp-validation-for="Price"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Stock" class="form-label">Stock :</label>
+            <input class="form-control" asp-for="Stock" />
+            <span class="text-danger" asp-validation-for="Stock"></span>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label asp-for="IsPublished" class="form-label">
+                Is Published? :
+            </label>
+            <input class="form-check-input" asp-for="IsPublished" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="Description">Description :</label>
+            <textarea class="form-control" id="Description" asp-for="Description" placeholder="Açıklama"></textarea>
+            <span class="text-danger" asp-validation-for="Description"></span>
+        </div>
+
+
+        <div class="mb-3 mt-3">
+            <span>Expire?</span>
+            @foreach (var item in ViewBag.Expire as Dictionary<string, int>)
+            {
+                <div class="form-check">
+                    @if (item.Value == ViewBag.radioExpireValue)
+                    {
+                        <input checked="checked" class="form-check-input" type="radio" id="Expire{@item.Value}" asp-for="Expire" value="@item.Value">
+                    }
+                    else
+                    {
+                        <input class="form-check-input" type="radio" id="Expire{@item.Value}" asp-for="Expire" value="@item.Value">
+                    }
+
+
+                    <label class="form-check-label" asp-for="Expire" for="Expire{@item.Value}">
+                        @item.Key
+                    </label>
+                </div>
+                <span class="text-danger" asp-validation-for="Expire"></span>
+            }
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PublishDate" class="form-label">PublishDate :</label>
+            <input class="form-control" asp-for="PublishDate" />
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+
+

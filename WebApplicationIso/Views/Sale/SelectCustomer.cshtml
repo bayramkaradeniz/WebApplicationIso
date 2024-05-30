@@ -1,0 +1,39 @@
+﻿@using WebApplicationIso.ViewModels
+
+@{
+    ViewData["Title"] = "SelectCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<SelectCustomerViewModel>
+
+<div id="maincontent">
+
+    <form asp-controller="Sale" asp-action="SelectProduct" method="get">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Full Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.FullName</td>
+                        <td>@item.Adress</td>
+                        <td>@item.Phone</td>
+                        <td><input type="radio" name="SelectedCustomerId" value="@item.Id" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit">Select</button>
+    </form>
+
+</div>

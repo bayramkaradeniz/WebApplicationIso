@@ -1,0 +1,13 @@
+﻿@using WebApplicationIso.ViewModels
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="maincontent">
+
+    <form asp-controller="Sale" asp-action="SelectCustomer" method="get">
+        <button type="submit" class="btn btn-primary">Satış Yap</button>
+    </form>
+</div>

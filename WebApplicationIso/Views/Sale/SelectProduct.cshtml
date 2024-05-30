@@ -1,0 +1,81 @@
+﻿@using WebApplicationIso.ViewModels
+
+@{
+    ViewData["Title"] = "SelectProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model ProductCustomerViewModel
+
+<div id="maincontent">
+    <h1>Select Product</h1>
+
+    <h2>Selected Customer</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.SelectedCustomer.Id</td>
+                <td>@Model.SelectedCustomer.FullName</td>
+                <td>@Model.SelectedCustomer.Adress</td>
+                <td>@Model.SelectedCustomer.Phone</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Products</h2>
+
+    <form asp-controller="Sale" asp-action="" method="post">
+        <input type="hidden" name="CustomerId" value="@Model.SelectedCustomer.Id" />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Expire</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@item.Price</td>
+                        <td>@item.Stock</td>
+                        <td>@item.Expire</td>
+                        <td>
+                            @if (item.Description == null || item.Description.Length <= 20)
+                            {
+                                @item.Description
+                            }
+                            else
+                            {
+                                @item.Description.Substring(0, 20) <text>...</text>
+                            }
+                        </td>
+                        <td>
+                            <input type="number" name="Quantities[@item.Id]" min="1" max="@item.Stock" />
+                        </td>
+                        <td>
+                            <input type="checkbox" name="SelectedProducts" value="@item.Id" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit">Submit</button>
+    </form>
+</div>
