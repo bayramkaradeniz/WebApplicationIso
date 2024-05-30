@@ -41,7 +41,6 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Stock</th>
-                    <th>Expire</th>
                     <th>Description</th>
                     <th>Quantity</th>
                     <th>Select</th>
@@ -55,7 +54,6 @@
                         <td>@item.Name</td>
                         <td>@item.Price</td>
                         <td>@item.Stock</td>
-                        <td>@item.Expire</td>
                         <td>
                             @if (item.Description == null || item.Description.Length <= 20)
                             {
@@ -67,13 +65,15 @@
                             }
                         </td>
                         <td>
-                            <input type="number" name="Quantities[@item.Id]" min="1" max="@item.Stock" />
+                            <input type="number" name="SelectedProductQuantities[@item.Id]" min="1" max="@item.Stock" />
+
                         </td>
                         <td>
                             <input type="checkbox" name="SelectedProducts" value="@item.Id" />
                         </td>
                     </tr>
                 }
+
             </tbody>
         </table>
         <button type="submit">Submit</button>

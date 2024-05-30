@@ -4,7 +4,8 @@ namespace WebApplicationIso.ViewModels
 {
     public class ProductCustomerViewModel
     {
-        public List<ProductViewModel> Products { get; set; }
-        public CustomerViewModel SelectedCustomer { get; set; }
+        public Customer SelectedCustomer { get; set; }
+        public List<Product> Products { get; set; }
+        public Dictionary<int, int> SelectedProductQuantities { get; set; }
     }
 }

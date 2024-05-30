@@ -11,6 +11,5 @@ namespace WebApplicationIso.ViewModels
         public string Phone { get; set; }
         public Decimal? TotalSalesPrice { get; set; }
         public int? PurchasedProductId { get; set; }
-        public List<PurchasedProduct> PurchasedProducts { get; set; }
     }
 }

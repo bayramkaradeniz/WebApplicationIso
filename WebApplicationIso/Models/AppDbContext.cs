@@ -12,7 +12,7 @@ namespace WebApplicationIso.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<PurchasedProduct> PurchasedProducts { get; set; }
+        public DbSet<SaleProduct> SaleProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,8 @@ namespace WebApplicationIso.Models
                 .HasMany(c => c.Sales)
                 .WithOne(s => s.Customer)
                 .HasForeignKey(s => s.CustomerId);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -38,74 +38,66 @@ namespace WebApplicationIso.Controllers
 
             var viewModel = new ProductCustomerViewModel
             {
-                Products = _mapper.Map<List<ProductViewModel>>(products),
-                SelectedCustomer = _mapper.Map<CustomerViewModel>(selectedCustomer)
+                Products = products,
+                SelectedCustomer = selectedCustomer
             };
-
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult SelectProduct(List<int> SelectedProducts, Dictionary<int, int> Quantities, int SelectedCustomerId)
+        public IActionResult AddSale(ProductCustomerViewModel model)
         {
-            //if (SelectedProducts != null && Quantities != null)
-            //{
-            //    var selectedProductViewModels = new List<ProductViewModelForSale>();
-            //    foreach (var productId in SelectedProducts)
-            //    {
-            //        if (Quantities.ContainsKey(productId))
-            //        {
-            //            var quantity = Quantities[productId];
-            //            var product = _context.Products.Find(productId);
-
-            //            if (product != null)
-            //            {
-            //                selectedProductViewModels.Add(new ProductViewModelForSale
-            //                {
-            //                    Id = productId,
-            //                    Name = product.Name,
-            //                    Quantity = quantity
-            //                });
-            //            }
-            //        }
-            //    }
-
-            //    if (selectedProductViewModels.Count > 0 && SelectedCustomerId != 0)
-            //    {
-            //        var customer = _context.Customers.Find(SelectedCustomerId);
-            //        if (customer != null)
-            //        {
-            //            var sale = new Sale
-            //            {
-            //                DateOfSale = DateTime.Now,
-            //                PurchasedProducts = selectedProductViewModels,
-            //                Customer = customer,
-            //                TotalPrice = CalculateTotalPrice(selectedProductViewModels)
-            //            };
-            //            _context.Sales.Add(sale);
-            //            _context.SaveChanges();
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    return View();
-            //}
-
-            return RedirectToAction("Index");
-        }
-        public decimal CalculateTotalPrice(List<ProductViewModelForSale> purchasedProducts)
-        {
-            decimal totalPrice = 0;
-
-            foreach (var product in purchasedProducts)
+            if (!ModelState.IsValid)
             {
-                var productPrice = _context.Products.Find(product.Id).Price;
-                totalPrice += productPrice * product.Quantity;
+                // Model doğrulama hatası varsa, aynı view'a geri dön
+                return View("SelectProduct", model);
             }
 
-            return totalPrice;
+            // Sale oluşturma işlemi
+            var sale = new Sale
+            {
+                Date = DateTime.Now,
+                CustomerId = model.SelectedCustomer.Id,
+                TotalSalePrice = 0, // Toplam satış fiyatını burada hesaplayabilirsiniz
+                SaleProducts = new List<SaleProduct>()
+            };
+
+            foreach (var product in model.Products)
+            {
+                var productFromDb = _context.Products.Find(product.Id);
+                if (productFromDb == null)
+                {
+                    // Ürün bulunamazsa hata mesajı ile aynı view'a geri dön
+                    ModelState.AddModelError("", $"Product with ID {product.Id} not found.");
+                    return View("SelectProduct", model);
+                }
+
+                var quantity = model.SelectedProductQuantities[product.Id];
+                if (quantity <= 0 || quantity > productFromDb.Stock)
+                {
+                    // Geçersiz miktar için hata mesajı ile aynı view'a geri dön
+                    ModelState.AddModelError("", $"Invalid quantity for product {productFromDb.Name}.");
+                    return View("SelectProduct", model);
+                }
+
+                // Satış ürünü oluşturma ve satışa ekleme
+                var saleProduct = new SaleProduct
+                {
+                    ProductId = product.Id,
+                    Quantity = quantity,
+                    Price = productFromDb.Price
+                };
+                sale.TotalSalePrice += quantity * productFromDb.Price;
+                sale.SaleProducts.Add(saleProduct);
+            }
+
+            // Veritabanına kaydetme
+            _context.Sales.Add(sale);
+            _context.SaveChanges();
+
+            // Başarılı olduğunda Index sayfasına yönlendir
+            return RedirectToAction("Index");
         }
     }
 }

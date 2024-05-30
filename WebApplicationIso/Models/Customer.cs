@@ -8,6 +8,5 @@
         public string Phone { get; set; }
         public Decimal? TotalSalesPrice { get; set; }
         public ICollection<Sale>? Sales { get; set; }
-        public ICollection<PurchasedProduct>? PurchasedProducts { get; set; }
     }
 }

@@ -35,89 +35,32 @@ namespace WebApplicationIso.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewBag.Expire = new Dictionary<string, int>()
-            {
-                { "1.Ay",1},
-                { "3.Ay",3},
-                { "6.Ay",6},
-                { "12.Ay",12},
-            };
 
             return View();
         }
         [HttpPost]
         public IActionResult Add(ProductViewModel product)
         {
-            ViewBag.Expire = new Dictionary<string, int>()
-            {
-                { "1.Ay",1},
-                { "3.Ay",3},
-                { "6.Ay",6},
-                { "12.Ay",12},
-            };
 
+            _context.Products.Add(_mapper.Map<Product>(product));
+            _context.SaveChanges();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Products.Add(_mapper.Map<Product>(product));
-                    _context.SaveChanges();
+            TempData["status"] = "Ürün Başarıyla Eklendi";
 
-                    TempData["status"] = "Ürün Başarıyla Eklendi";
-
-                    return RedirectToAction("Index");
-                }
-                catch (Exception)
-                {
-
-                    ModelState.AddModelError(String.Empty, "Ürün Kaydedilirken Hata Meydana Geldi.");
-                    return View();
-                }
-
-            }
-            else
-            {
-
-                return View();
-            }
+            return RedirectToAction("Index");
 
         }
         [HttpGet]
         public IActionResult Update(int id)
         {
-            var product = _context.Products.Find(id); //Id göndermek İçin
-            ViewBag.radioExpireValue = product.Expire;
-            ViewBag.Expire = new Dictionary<string, int>()
-            {
-                { "1.Ay",1},
-                { "3.Ay",3},
-                { "6.Ay",6},
-                { "12.Ay",12},
-            };
-           
+            var product = _context.Products.Find(id);
+
             return View(_mapper.Map<ProductViewModel>(product));
         }
         [HttpPost]
         public IActionResult Update(ProductViewModel updateProduct)
         {
 
-            if (!ModelState.IsValid)
-            {
-
-                ViewBag.radioExpireValue = updateProduct.Expire;
-
-                ViewBag.Expire = new Dictionary<string, int>()
-            {
-                { "1.Ay",1},
-                { "3.Ay",3},
-                { "6.Ay",6},
-                { "12.Ay",12},
-            };
-              
-                return View();
-
-            }
             _context.Products.Update(_mapper.Map<Product>(updateProduct));
             _context.SaveChanges();
             TempData["status"] = "Ürün Başarıyla Güncellendi";

@@ -1,20 +1,18 @@
 ﻿@using WebApplicationIso.ViewModels
 
 @{
-}
-@{
     ViewData["Title"] = "Index";
 }
 @model List<ProductViewModel>;
 <div id="maincontent">
     <h1>Ürünler</h1>
-    @*
+    
     @if (TempData["status"] != null)
     {
     <div class="alert alert-primary" role="alert">
     @TempData["status"]
     </div>
-    } *@
+    }
 
     <td><a asp-controller="product" asp-action="Add">Ekle</a></td>
     <table class="table">
@@ -24,10 +22,7 @@
                 <th>İsim</th>
                 <th>Fiyat</th>
                 <th>Stok</th>
-                <th>Yayınlansın mı?</th>
-                <th>Expire</th>
                 <th>Description</th>
-                <th>PublishDate</th>
                 <th></th>
                 <th>İşlem</th>
 
@@ -42,10 +37,6 @@
                     <td>@item.Price</td>
                     <td>@item.Stock</td>
                     <td>
-                        @(item.IsPublished ? "Yes" : "No")
-                    </td>
-                    <td>@item.Expire</td>
-                    <td>
                         @if (item.Description == null || item.Description.Length <= 20)
                         {
                             @item.Description
@@ -55,7 +46,6 @@
                             @item.Description.Substring(0, 20) <text>...</text>
                         }
                     </td>
-                    <td>@item.PublishDate</td>
 
                      <td><a asp-controller="product" asp-action="remove" asp-route-id="@item.Id">Sil</a></td>
                 <td><a  asp-controller="product" asp-action="update" asp-route-id="@item.Id">Güncelle</a></td>
